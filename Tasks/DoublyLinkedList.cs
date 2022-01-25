@@ -7,18 +7,18 @@ namespace Tasks
 {
     public class DoublyLinkedList<T> : IDoublyLinkedList<T>
     {
-        private Node<T> head;
+        private Node<T> headNode;
 
         public int Length
         {
             get
             {
                 int count = 0;
-                Node<T> node = this.head;
+                Node<T> node = this.HeadNode;
 
                 while (node != null)
                 {
-                    node = node.next;
+                    node = node.NextNode;
                     count++;
                 }
 
@@ -26,26 +26,26 @@ namespace Tasks
             }
         }
 
-        public Node<T> Head => this.head;
+        public Node<T> HeadNode { get => this.headNode; set => this.headNode = value; }
 
         public void Add(T e)
         {
             Node<T> newNode = new Node<T>(e);
-            Node<T> last = this.head;
-            newNode.next = null;
+            Node<T> currentNode = this.HeadNode;
+            newNode.NextNode = null;
 
-            if (this.head == null)
+            if (this.HeadNode == null)
             {
-                newNode.prev = null;
-                this.head = newNode;
+                newNode.PreviousNode = null;
+                this.HeadNode = newNode;
                 return;
             }
 
-            while (last.next != null)
-                last = last.next;
+            while (currentNode.NextNode != null)
+                currentNode = currentNode.NextNode;
 
-            last.next = newNode;
-            newNode.prev = last;
+            currentNode.NextNode = newNode;
+            newNode.PreviousNode = currentNode;
         }
 
         public void AddAt(int index, T e)
@@ -57,22 +57,22 @@ namespace Tasks
             }
 
             int count = 0;
-            Node<T> last = this.head;
+            Node<T> currentNode = this.HeadNode;
 
             if (index == 0)
             {
-                this.head.Data = e;
+                this.HeadNode.NodeValue = e;
                 return;
             }
 
-            while (last.next != null)
+            while (currentNode.NextNode != null)
             {
-                last = last.next;
+                currentNode = currentNode.NextNode;
                 count++;
 
                 if (index == count)
                 {
-                    last.Data = e;
+                    currentNode.NodeValue = e;
                     return;
                 }
             }
@@ -86,21 +86,21 @@ namespace Tasks
             }
 
             int count = 0;
-            Node<T> last = this.head;
+            Node<T> currentNode = this.HeadNode;
 
             if (index == 0)
             {
-                return last.Data;
+                return currentNode.NodeValue;
             }
 
-            while (last.next != null)
+            while (currentNode.NextNode != null)
             {
-                last = last.next;
+                currentNode = currentNode.NextNode;
                 count++;
 
                 if (index == count)
                 {
-                    return last.Data;
+                    return currentNode.NodeValue;
                 }
             }
 
@@ -114,44 +114,44 @@ namespace Tasks
 
         public void Remove(T item)
         {
-            if (this.head == null)
+            if (this.HeadNode == null)
             {
                 return;
             }
 
-            Node<T> last = this.head;
+            Node<T> currentNode = this.HeadNode;
 
-            while (last != null)
+            while (currentNode != null)
             {
-                if (last.Data.Equals(item))
+                if (currentNode.NodeValue.Equals(item))
                 {
-                    this.head = RemoveNode(last);
+                    this.HeadNode = RemoveNode(currentNode);
                     return;
                 }
                 else
-                    last = last.next;
+                    currentNode = currentNode.NextNode;
 
             }
         }
 
         public T RemoveAt(int index)
         {
-            if (this.head == null || index < 0 || index >= this.Length)
+            if (this.HeadNode == null || index < 0 || index >= this.Length)
             {
                 throw new IndexOutOfRangeException(nameof(index));
             }
 
-            Node<T> last = this.head;
+            Node<T> currentNode = this.HeadNode;
             int count;
 
-            for (count = 0; last != null && count < index; count++)
+            for (count = 0; currentNode != null && count < index; count++)
             {
-                last = last.next;
+                currentNode = currentNode.NextNode;
             }
 
-            this.RemoveNode(last);
+            this.RemoveNode(currentNode);
 
-            return last.Data;
+            return currentNode.NodeValue;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -159,21 +159,21 @@ namespace Tasks
             return this.GetEnumerator();
         }
 
-        private Node<T> RemoveNode(Node<T> node)
+        private Node<T> RemoveNode(Node<T> nodeToRemove)
         {
-            if (this.head == null || node == null)
+            if (this.HeadNode == null || nodeToRemove == null)
                 return null;
 
-            if (this.head == node)
-                this.head = node.next;
+            if (this.HeadNode == nodeToRemove)
+                this.HeadNode = nodeToRemove.NextNode;
 
-            if (node.next != null)
-                node.next.prev = node.prev;
+            if (nodeToRemove.NextNode != null)
+                nodeToRemove.NextNode.PreviousNode = nodeToRemove.PreviousNode;
 
-            if (node.prev != null)
-                node.prev.next = node.next;
+            if (nodeToRemove.PreviousNode != null)
+                nodeToRemove.PreviousNode.NextNode = nodeToRemove.NextNode;
 
-            return this.head;
+            return this.HeadNode;
         }
     }
 }

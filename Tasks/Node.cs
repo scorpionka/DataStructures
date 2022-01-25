@@ -2,15 +2,17 @@
 {
     public class Node<T>
     {
-        private T data;
-        public Node<T> prev;
-        public Node<T> next;
+        private T nodeValue;
+        private Node<T> previousNode;
+        private Node<T> nextNode;
 
-        public Node(T data)
+        public Node(T nodeValue)
         {
-            this.data = data;
+            this.nodeValue = nodeValue;
         }
 
-        public T Data { get => data; set => data = value; }
+        public T NodeValue { get => nodeValue; set => nodeValue = value; }
+        public Node<T> PreviousNode { get => previousNode; set => previousNode = value; }
+        public Node<T> NextNode { get => nextNode; set => nextNode = value; }
     }
 }

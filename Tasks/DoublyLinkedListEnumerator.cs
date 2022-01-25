@@ -14,7 +14,7 @@ namespace Tasks
         }
 
         public Node<T> Node { get; private set; }
-        public T Current { get { return this.Node.Data; } }
+        public T Current { get { return this.Node.NodeValue; } }
         object IEnumerator.Current => Current;
 
         public bool MoveNext()
@@ -23,11 +23,11 @@ namespace Tasks
 
             if (position == 0)
             {
-                this.Node = this.collection.Head;
+                this.Node = this.collection.HeadNode;
             }
             else
             {
-                this.Node = this.Node.next;
+                this.Node = this.Node.NextNode;
             }
 
             return (position < this.collection.Length);
